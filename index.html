@@ -44,6 +44,7 @@ body{
   font-size:60px;
   top:40%;
   left:-20%;
+  display:none;
   animation:fly 6s linear forwards;
 }
 
@@ -64,7 +65,7 @@ body{
   font-weight:bold;
 }
 
-/* HAVAİ FİŞEK */
+/* PATLAMA */
 .spark{
   position:fixed;
   width:8px;
@@ -86,7 +87,7 @@ body{
 <div id="bird">🕊️</div>
 
 <div id="container">
-  <div id="text"></div>
+  <div id="text">Ekrana dokun 🎀</div>
   <div id="envelope">💌</div>
 </div>
 
@@ -96,23 +97,18 @@ body{
 
 <script>
 const textEl = document.getElementById("text");
-const env = document.getElementById("envelope");
+const bird = document.getElementById("bird");
+const env  = document.getElementById("envelope");
 const music = document.getElementById("music");
 
 let stage = 0;
-let locked = true;
+let locked = false;
 
-/* KUŞ GELİR */
-setTimeout(()=>{
-  env.style.display="block";
-  textEl.innerHTML="Zarfı açmak için<br>ekrana dokun 🎀";
-  locked = false;
-},5500);
-
-/* TIKLAMA */
+/* TIKLAMA YÖNETİMİ */
 document.body.addEventListener("click",()=>{
   if(locked) return;
 
+  /* SAHNE 1: GERİ SAYIM */
   if(stage === 0){
     stage = 1;
     locked = true;
@@ -120,8 +116,17 @@ document.body.addEventListener("click",()=>{
     music.volume = 0.3;
     music.play().catch(()=>{});
 
-    env.style.display="none";
     startCountdown(3);
+  }
+
+  /* SAHNE 3: ZARF AÇ */
+  else if(stage === 2){
+    stage = 3;
+    locked = true;
+
+    env.style.display="none";
+    textEl.innerHTML="";
+    typeText();
   }
 });
 
@@ -136,9 +141,21 @@ function startCountdown(n){
     setTimeout(()=>{
       textEl.className="";
       textEl.innerHTML="";
-      typeText();
+      startBird();
     },1000);
   }
+}
+
+/* KUŞ + ZARF */
+function startBird(){
+  bird.style.display="block";
+
+  setTimeout(()=>{
+    env.style.display="block";
+    textEl.innerHTML="Zarfı açmak için<br>ekrana dokun 🎀";
+    stage = 2;
+    locked = false;
+  },5500);
 }
 
 /* YAZI */
@@ -192,6 +209,7 @@ function finalEffects(){
 
 </body>
 </html>
+
 
 
 
