@@ -2,12 +2,12 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>2026 🎀</title>
+<title>Özel Mesaj 💌</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap');
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+<style>
 body{
   margin:0;
   height:100vh;
@@ -21,51 +21,56 @@ body{
 
 #container{
   text-align:center;
-  z-index:10;
   color:#5a1a2c;
+  z-index:10;
+  padding: 0 10px;
 }
 
 #text{
   font-family:'Pacifico',cursive;
   font-size:32px;
   line-height:1.6;
-  min-height:220px;
+  min-height:260px;
 }
 
-/* GERİ SAYIM */
-.count{
-  font-size:90px;
+/* Koca Ayı yazısı */
+.bear{
+  font-size:40px;
+  letter-spacing:5px;
   font-weight:bold;
 }
 
-/* KUŞ */
-#bird{
+/* Geri sayım */
+.count{
+  font-size:80px;
+  font-weight:bold;
+}
+
+/* Kuş + zarf */
+#birdWrap{
   position:absolute;
-  font-size:60px;
   top:40%;
-  left:-20%;
+  left:-30%;
   display:none;
   animation:fly 6s linear forwards;
+}
+
+#birdWrap img{
+  width:80px;
 }
 
 @keyframes fly{
   to{ left:110%; }
 }
 
-/* ZARF */
-#envelope{
-  font-size:60px;
-  display:none;
-  margin-top:10px;
-}
-
-/* AŞKKK */
+/* AŞKKK + kalp (mobil uyumlu) */
 .bigLove{
-  font-size:72px;
+  font-size:48px;   /* 🔴 küçültüldü */
   font-weight:bold;
+  display:inline-block;
 }
 
-/* PATLAMA */
+/* Patlama */
 .spark{
   position:fixed;
   width:8px;
@@ -77,54 +82,60 @@ body{
 
 @keyframes explode{
   from{transform:scale(1);opacity:1;}
-  to{transform:scale(20);opacity:0;}
+  to{transform:scale(22);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<div id="bird">🕊️</div>
-
-<div id="container">
-  <div id="text">Ekrana dokun 🎀</div>
-  <div id="envelope">💌</div>
+<!-- Kuş + Zarf -->
+<div id="birdWrap">
+  <img src="https://i.imgur.com/3ZQ3Z7O.png">
+  💌
 </div>
 
+<!-- Metin -->
+<div id="container">
+  <div id="text">
+    <div class="bear">K O C A&nbsp;&nbsp;A Y I</div>
+    Koca Ayı’dan sana bir özel mesaj var<br>
+    Okumak istiyorsan<br>
+    <strong>ekrana 1 defa dokun</strong>
+  </div>
+</div>
+
+<!-- Müzik -->
 <audio id="music" preload="auto" loop>
   <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_3e4a1c7c2c.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const textEl = document.getElementById("text");
-const bird = document.getElementById("bird");
-const env  = document.getElementById("envelope");
+const birdWrap = document.getElementById("birdWrap");
 const music = document.getElementById("music");
 
 let stage = 0;
 let locked = false;
 
-/* TIKLAMA YÖNETİMİ */
 document.body.addEventListener("click",()=>{
   if(locked) return;
 
-  /* SAHNE 1: GERİ SAYIM */
+  // SAHNE 1
   if(stage === 0){
     stage = 1;
     locked = true;
 
-    music.volume = 0.3;
+    music.volume = 0.35;
     music.play().catch(()=>{});
 
     startCountdown(3);
   }
 
-  /* SAHNE 3: ZARF AÇ */
+  // SAHNE 3
   else if(stage === 2){
     stage = 3;
     locked = true;
-
-    env.style.display="none";
     textEl.innerHTML="";
     typeText();
   }
@@ -148,21 +159,21 @@ function startCountdown(n){
 
 /* KUŞ + ZARF */
 function startBird(){
-  bird.style.display="block";
+  birdWrap.style.display="block";
 
   setTimeout(()=>{
-    env.style.display="block";
-    textEl.innerHTML="Zarfı açmak için<br>ekrana dokun 🎀";
+    textEl.innerHTML="Zarfı açmak için<br><strong>ekrana 1 defa dokun</strong>";
     stage = 2;
     locked = false;
-  },5500);
+  },6000);
 }
 
 /* YAZI */
 const lines=[
-  "Herkes yeni yıla,",
-  "sen yıllarıma",
-  "AŞKKK 🤍",
+  "Herkes Yeni Yıla",
+  "Sen Yıllarıma",
+  "",
+  "AŞŞKK 🤍",   // 🤍 EKLENDİ
   "",
   "Kaan’dan İclale"
 ];
@@ -177,13 +188,15 @@ function typeText(){
 
   if(c<lines[l].length){
     let ch = lines[l].charAt(c);
-    if(lines[l].includes("AŞKKK")){
+
+    if(lines[l].includes("AŞŞKK")){
       textEl.innerHTML += `<span class="bigLove">${ch}</span>`;
     }else{
       textEl.innerHTML += ch;
     }
+
     c++;
-    setTimeout(typeText,120);
+    setTimeout(typeText,110);
   }else{
     textEl.innerHTML+="<br>";
     l++; c=0;
@@ -191,17 +204,17 @@ function typeText(){
   }
 }
 
-/* FİNAL */
+/* FINAL */
 function finalEffects(){
   if(navigator.vibrate){
     navigator.vibrate([200,100,200]);
   }
 
-  for(let i=0;i<6;i++){
+  for(let i=0;i<8;i++){
     let s=document.createElement("div");
     s.className="spark";
-    s.style.left=(30+Math.random()*40)+"vw";
-    s.style.top=(30+Math.random()*40)+"vh";
+    s.style.left=(25+Math.random()*50)+"vw";
+    s.style.top=(25+Math.random()*40)+"vh";
     document.body.appendChild(s);
   }
 }
@@ -209,6 +222,7 @@ function finalEffects(){
 
 </body>
 </html>
+
 
 
 
