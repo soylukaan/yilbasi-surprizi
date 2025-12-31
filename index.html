@@ -32,6 +32,12 @@ body{
   min-height:220px;
 }
 
+/* GERİ SAYIM */
+.count{
+  font-size:90px;
+  font-weight:bold;
+}
+
 /* KUŞ */
 #bird{
   position:absolute;
@@ -54,7 +60,7 @@ body{
 
 /* AŞKKK */
 .bigLove{
-  font-size:64px;
+  font-size:72px;
   font-weight:bold;
 }
 
@@ -84,7 +90,7 @@ body{
   <div id="envelope">💌</div>
 </div>
 
-<audio id="music" loop>
+<audio id="music" preload="auto" loop>
   <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_3e4a1c7c2c.mp3" type="audio/mpeg">
 </audio>
 
@@ -93,26 +99,47 @@ const textEl = document.getElementById("text");
 const env = document.getElementById("envelope");
 const music = document.getElementById("music");
 
-let step = 0;
+let stage = 0;
+let locked = true;
 
-/* KUŞ GELİNCE */
+/* KUŞ GELİR */
 setTimeout(()=>{
   env.style.display="block";
   textEl.innerHTML="Zarfı açmak için<br>ekrana dokun 🎀";
+  locked = false;
 },5500);
 
 /* TIKLAMA */
 document.body.addEventListener("click",()=>{
-  if(step>0) return;
-  step=1;
+  if(locked) return;
 
-  music.volume=0.3;
-  music.play();
+  if(stage === 0){
+    stage = 1;
+    locked = true;
 
-  env.style.display="none";
-  textEl.innerHTML="";
-  typeText();
+    music.volume = 0.3;
+    music.play().catch(()=>{});
+
+    env.style.display="none";
+    startCountdown(3);
+  }
 });
+
+/* GERİ SAYIM */
+function startCountdown(n){
+  textEl.className="count";
+  textEl.innerHTML=n;
+
+  if(n>1){
+    setTimeout(()=>startCountdown(n-1),1000);
+  }else{
+    setTimeout(()=>{
+      textEl.className="";
+      textEl.innerHTML="";
+      typeText();
+    },1000);
+  }
+}
 
 /* YAZI */
 const lines=[
@@ -132,14 +159,14 @@ function typeText(){
   }
 
   if(c<lines[l].length){
-    let ch=lines[l].charAt(c);
+    let ch = lines[l].charAt(c);
     if(lines[l].includes("AŞKKK")){
-      textEl.innerHTML+=`<span class="bigLove">${ch}</span>`;
+      textEl.innerHTML += `<span class="bigLove">${ch}</span>`;
     }else{
-      textEl.innerHTML+=ch;
+      textEl.innerHTML += ch;
     }
     c++;
-    setTimeout(typeText,90);
+    setTimeout(typeText,120);
   }else{
     textEl.innerHTML+="<br>";
     l++; c=0;
@@ -165,6 +192,7 @@ function finalEffects(){
 
 </body>
 </html>
+
 
 
  
