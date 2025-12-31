@@ -8,28 +8,31 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', sans-serif;
   color: white;
-  overflow: hidden;
   user-select: none;
 }
 
+/* Yazı */
 #text {
-  font-size: 28px;
+  z-index: 3;
   text-align: center;
+  font-size: 28px;
   line-height: 1.5;
   transition: all 0.8s ease;
 }
 
 .big {
-  font-size: 80px;
+  font-size: 90px;
   font-weight: bold;
 }
 
+/* Fade */
 .fade {
   animation: fadeIn 1s ease forwards;
 }
@@ -37,6 +40,21 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* Parçacık arka plan */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: float linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); }
+  to   { transform: translateY(-10vh); }
 }
 
 /* Havai fişek */
@@ -65,13 +83,23 @@ body {
 </audio>
 
 <script>
-let step = 0;
 const text = document.getElementById("text");
 const music = document.getElementById("music");
+let started = false;
+
+/* Arka plan parçacıkları */
+for (let i = 0; i < 70; i++) {
+  let p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (6 + Math.random() * 10) + "s";
+  p.style.opacity = Math.random();
+  document.body.appendChild(p);
+}
 
 document.body.addEventListener("click", () => {
-  if (step > 0) return;
-  step = 1;
+  if (started) return;
+  started = true;
 
   music.volume = 0.3;
   music.play();
@@ -79,12 +107,12 @@ document.body.addEventListener("click", () => {
   countdown(3);
 });
 
-function countdown(num) {
+function countdown(n) {
   text.className = "big fade";
-  text.innerHTML = num;
+  text.innerHTML = n;
 
-  if (num > 1) {
-    setTimeout(() => countdown(num - 1), 1000);
+  if (n > 1) {
+    setTimeout(() => countdown(n - 1), 1000);
   } else {
     setTimeout(showFinal, 1000);
   }
@@ -106,16 +134,15 @@ function showFinal() {
 }
 
 function fireworks() {
-  for (let i = 0; i < 8; i++) {
-    let spark = document.createElement("div");
-    spark.className = "spark";
-    spark.style.left = (20 + Math.random() * 60) + "vw";
-    spark.style.top = (20 + Math.random() * 40) + "vh";
-    document.body.appendChild(spark);
+  for (let i = 0; i < 10; i++) {
+    let s = document.createElement("div");
+    s.className = "spark";
+    s.style.left = (20 + Math.random() * 60) + "vw";
+    s.style.top = (20 + Math.random() * 40) + "vh";
+    document.body.appendChild(s);
   }
 }
 </script>
 
 </body>
 </html>
-
