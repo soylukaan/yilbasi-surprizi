@@ -2,36 +2,33 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Özel Mesaj 💌</title>
+<title>Özel Mesaj 💗</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
   height:100vh;
-  background:linear-gradient(135deg,#ffb6c1,#ffc0cb,#ffd6e8);
+  background:linear-gradient(135deg,#ffd1dc,#ffb7c5,#ffe6ee);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:'Poppins',sans-serif;
+  font-family:'Comic Neue',cursive;
   overflow:hidden;
 }
 
-/* Ortadaki metin alanı */
 #container{
   text-align:center;
-  color:#5a1a2c;
-  z-index:5;
-  padding:0 12px;
+  color:#b03060;
+  padding:20px;
 }
 
 #text{
-  font-family:'Pacifico',cursive;
-  font-size:32px;
+  font-size:26px;
   line-height:1.6;
-  min-height:260px;
+  min-height:200px;
 }
 
 /* Geri sayım */
@@ -40,41 +37,39 @@ body{
   font-weight:bold;
 }
 
-/* KUŞ + ZARF (GÖRÜNÜR VE ÖNDE) */
+/* Kuş + zarf */
 #birdWrap{
   position:fixed;
-  top:45%;
-  left:-25%;
+  top:40%;
+  left:-30%;
   display:none;
-  z-index:10;
   animation:fly 6s linear forwards;
+  z-index:5;
 }
 
 #birdWrap img{
-  width:90px;
+  width:120px;
 }
 
 @keyframes fly{
-  from{ left:-25%; }
+  from{ left:-30%; }
   to{ left:110%; }
 }
 
-/* AŞŞKK (mobil uyumlu) */
-.bigLove{
-  font-size:48px;
+/* AŞK */
+.love{
+  font-size:42px;
   font-weight:bold;
 }
 
-/* Zıplayan kalp */
+/* Kalp */
 .heart{
-  display:inline-block;
-  margin-left:6px;
-  animation:heartBounce 1.2s ease-in-out infinite;
+  animation:pulse 1.2s infinite;
 }
 
-@keyframes heartBounce{
-  0%,100%{ transform:translateY(0); }
-  50%{ transform:translateY(-6px); }
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.2);}
 }
 
 /* Patlama */
@@ -84,104 +79,94 @@ body{
   height:8px;
   background:white;
   border-radius:50%;
-  animation:explode 1.2s ease-out forwards;
-  z-index:20;
+  animation:boom 1s forwards;
 }
 
-@keyframes explode{
-  from{transform:scale(1);opacity:1;}
-  to{transform:scale(22);opacity:0;}
+@keyframes boom{
+  from{opacity:1;transform:scale(1);}
+  to{opacity:0;transform:scale(20);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- Kuş + Zarf -->
+<!-- Kuş + Zarf GÖRSEL -->
 <div id="birdWrap">
-  <img src="https://i.imgur.com/3ZQ3Z7O.png" alt="Kuş">
-  💌
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Kuş">
+  <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" width="60">
 </div>
 
-<!-- Metin -->
 <div id="container">
   <div id="text">
     Koca Ayı’dan sana bir özel mesaj var<br>
     Okumak istiyorsan<br>
-    <strong>ekrana 1 defa dokun</strong>
+    <strong>ekrana dokun 💗</strong>
   </div>
 </div>
 
 <!-- Müzik -->
-<audio id="music" preload="auto" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_3e4a1c7c2c.mp3" type="audio/mpeg">
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/23/audio_6d8f65f9c6.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const textEl = document.getElementById("text");
-const birdWrap = document.getElementById("birdWrap");
+const bird = document.getElementById("birdWrap");
 const music = document.getElementById("music");
 
 let stage = 0;
-let locked = false;
+let lock = false;
 
 document.body.addEventListener("click",()=>{
-  if(locked) return;
+  if(lock) return;
 
-  // SAHNE 1: geri sayım
   if(stage === 0){
     stage = 1;
-    locked = true;
+    lock = true;
 
-    // 🎶 Müzik (PC + telefon çalışır)
-    music.volume = 0.35;
+    music.volume = 0.4;
     music.play().catch(()=>{});
 
-    startCountdown(3);
+    countdown(3);
   }
-
-  // SAHNE 3: zarf aç → yazı
   else if(stage === 2){
     stage = 3;
-    locked = true;
+    lock = true;
     textEl.innerHTML="";
     typeText();
   }
 });
 
-/* GERİ SAYIM */
-function startCountdown(n){
+function countdown(n){
   textEl.className="count";
   textEl.innerHTML=n;
 
   if(n>1){
-    setTimeout(()=>startCountdown(n-1),1000);
+    setTimeout(()=>countdown(n-1),1000);
   }else{
     setTimeout(()=>{
       textEl.className="";
       textEl.innerHTML="";
-      startBird();
+      showBird();
     },1000);
   }
 }
 
-/* KUŞ + ZARF GELSİN */
-function startBird(){
-  birdWrap.style.display="block";
-
+function showBird(){
+  bird.style.display="block";
   setTimeout(()=>{
-    textEl.innerHTML="Zarfı açmak için<br><strong>ekrana 1 defa dokun</strong>";
+    textEl.innerHTML="Zarfı açmak için<br><strong>ekrana dokun 💌</strong>";
     stage = 2;
-    locked = false;
+    lock = false;
   },6000);
 }
 
-/* YAZI */
 const lines=[
-  "Herkes Yeni Yıla",
-  "Sen Yıllarıma",
+  "Herkes yeni yıla",
+  "Sen yıllarıma",
   "",
-  "AŞŞKK",
+  "AŞK",
   "",
   "Kaan’dan İclale"
 ];
@@ -190,42 +175,37 @@ let l=0,c=0;
 
 function typeText(){
   if(l>=lines.length){
-    finalEffects();
+    finale();
     return;
   }
 
   if(c<lines[l].length){
-    let ch = lines[l].charAt(c);
-    if(lines[l]==="AŞŞKK"){
-      textEl.innerHTML += `<span class="bigLove">${ch}</span>`;
+    if(lines[l]==="AŞK"){
+      textEl.innerHTML += `<span class="love">${lines[l][c]}</span>`;
     }else{
-      textEl.innerHTML += ch;
+      textEl.innerHTML += lines[l][c];
     }
     c++;
-    setTimeout(typeText,110);
+    setTimeout(typeText,120);
   }else{
-    if(lines[l]==="AŞŞKK"){
-      textEl.innerHTML += `<span class="heart">🤍</span>`;
+    if(lines[l]==="AŞK"){
+      textEl.innerHTML += `<span class="heart"> 🤍</span>`;
     }
     textEl.innerHTML+="<br>";
     l++; c=0;
-    setTimeout(typeText,600);
+    setTimeout(typeText,500);
   }
 }
 
-/* FINAL */
-function finalEffects(){
-  // 📳 titreşim
+function finale(){
   if(navigator.vibrate){
     navigator.vibrate([200,100,200]);
   }
-
-  // 🎆 patlama
-  for(let i=0;i<8;i++){
+  for(let i=0;i<6;i++){
     let s=document.createElement("div");
     s.className="spark";
-    s.style.left=(25+Math.random()*50)+"vw";
-    s.style.top=(25+Math.random()*40)+"vh";
+    s.style.left=(30+Math.random()*40)+"vw";
+    s.style.top=(30+Math.random()*40)+"vh";
     document.body.appendChild(s);
   }
 }
