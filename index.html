@@ -37,28 +37,33 @@ body{
   font-weight:bold;
 }
 
-/* Kedi + zarf */
+/* KEDİ + ZARF (GARANTİLİ GÖRÜNÜR) */
 #petWrap{
   position:fixed;
   top:42%;
-  left:-35%;
+  left:-40%;
   display:none;
   animation:fly 6s linear forwards;
-  z-index:5;
+  z-index:10;
 }
 
-#petWrap img{
-  width:120px;
+#petWrap img.cat{
+  width:130px;
+}
+
+#petWrap img.letter{
+  width:70px;
+  margin-left:-10px;
 }
 
 @keyframes fly{
-  from{ left:-35%; }
+  from{ left:-40%; }
   to{ left:110%; }
 }
 
 /* AŞŞKKK */
 .love{
-  font-size:44px;   /* mobil uyumlu */
+  font-size:44px;
   font-weight:bold;
 }
 
@@ -69,7 +74,7 @@ body{
   left:50%;
   font-size:28px;
   animation:flyHeart 2.2s ease-out forwards;
-  z-index:10;
+  z-index:15;
 }
 
 @keyframes flyHeart{
@@ -96,10 +101,10 @@ body{
 
 <body>
 
-<!-- KEDİ + ZARF GÖRSEL -->
+<!-- 🐱 KEDİ + 💌 ZARF (PNG, NET) -->
 <div id="petWrap">
-  <img src="https://cdn-icons-png.flaticon.com/512/616/616430.png" alt="Kedi">
-  <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" width="60">
+  <img class="cat" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/320px-Cat03.jpg" alt="Kedi">
+  <img class="letter" src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Zarf">
 </div>
 
 <div id="container">
