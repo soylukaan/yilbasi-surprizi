@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>2026 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #1a1440, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  overflow: hidden;
+  user-select: none;
+}
+
+#text {
+  font-size: 22px;
+  text-align: center;
+  line-height: 1.6;
+  z-index: 2;
+  transition: all 1s ease;
+}
+
+.fade {
+  animation: fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* KAR */
+.snow {
+  position: fixed;
+  top: -10px;
+  animation: fall linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
+
+/* KALP */
+.heart {
+  position: fixed;
+  font-size: 22px;
+  animation: floatUp 3s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-120px); }
+}
+
+/* HAVAİ FİŞEK */
+.spark {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(20); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="text">Ekrana 1 kere dokun…</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_3e4a1c7c2c.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let step = 0;
+const text = document.getElementById("text");
+const music = document.getElementById("music");
+
+document.body.addEventListener("click", () => {
+  if (step >= 3) return;
+  step++;
+
+  if (step === 1) {
+    music.volume = 0.3;
+    music.play();
+    startSnow();
+    text.innerHTML = "Herkes yeni yıla,";
+    text.className = "fade";
+  }
+
+  else if (step === 2) {
+    text.innerHTML = "sen yıllarıma birtanem";
+    spawnHeart();
+  }
+
+  else if (step === 3) {
+    text.innerHTML = `
+      Herkes yeni yıla,<br>
+      sen yıllarıma birtanem<br><br>
+      <small>Kaan’dan İclale 🤍</small>
+    `;
+    spawnHeart();
+    fireworks();
+  }
+});
+
+function startSnow() {
+  for (let i = 0; i < 50; i++) {
+    let snow = document.createElement("div");
+    snow.className = "snow";
+    snow.innerHTML = "❄";
+    snow.style.left = Math.random() * 100 + "vw";
+    snow.style.animationDuration = (3 + Math.random() * 5) + "s";
+    snow.style.fontSize = (10 + Math.random() * 18) + "px";
+    document.body.appendChild(snow);
+  }
+}
+
+function spawnHeart() {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "🤍";
+  heart.style.left = (40 + Math.random() * 20) + "vw";
+  heart.style.top = "55vh";
+  document.body.appendChild(heart);
+}
+
+function fireworks() {
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200]);
+  }
+
+  for (let i = 0; i < 6; i++) {
+    let spark = document.createElement("div");
+    spark.className = "spark";
+    spark.style.left = (30 + Math.random() * 40) + "vw";
+    spark.style.top = (30 + Math.random() * 30) + "vh";
+    document.body.appendChild(spark);
+  }
+}
+</script>
+
+</body>
+</html>
