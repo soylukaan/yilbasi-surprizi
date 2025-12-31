@@ -28,7 +28,7 @@ body{
 #text{
   font-size:26px;
   line-height:1.6;
-  min-height:200px;
+  min-height:220px;
 }
 
 /* Geri sayım */
@@ -37,39 +37,44 @@ body{
   font-weight:bold;
 }
 
-/* Kuş + zarf */
-#birdWrap{
+/* Kedi + zarf */
+#petWrap{
   position:fixed;
-  top:40%;
-  left:-30%;
+  top:42%;
+  left:-35%;
   display:none;
   animation:fly 6s linear forwards;
   z-index:5;
 }
 
-#birdWrap img{
+#petWrap img{
   width:120px;
 }
 
 @keyframes fly{
-  from{ left:-30%; }
+  from{ left:-35%; }
   to{ left:110%; }
 }
 
-/* AŞK */
+/* AŞŞKKK */
 .love{
-  font-size:42px;
+  font-size:44px;   /* mobil uyumlu */
   font-weight:bold;
 }
 
-/* Kalp */
-.heart{
-  animation:pulse 1.2s infinite;
+/* Uçan beyaz kalp */
+.fly-heart{
+  position:fixed;
+  bottom:35%;
+  left:50%;
+  font-size:28px;
+  animation:flyHeart 2.2s ease-out forwards;
+  z-index:10;
 }
 
-@keyframes pulse{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.2);}
+@keyframes flyHeart{
+  from{ transform:translate(-50%,0); opacity:1; }
+  to{ transform:translate(-50%,-140px); opacity:0; }
 }
 
 /* Patlama */
@@ -84,16 +89,16 @@ body{
 
 @keyframes boom{
   from{opacity:1;transform:scale(1);}
-  to{opacity:0;transform:scale(20);}
+  to{opacity:0;transform:scale(18);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- Kuş + Zarf GÖRSEL -->
-<div id="birdWrap">
-  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Kuş">
+<!-- KEDİ + ZARF GÖRSEL -->
+<div id="petWrap">
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616430.png" alt="Kedi">
   <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" width="60">
 </div>
 
@@ -112,7 +117,7 @@ body{
 
 <script>
 const textEl = document.getElementById("text");
-const bird = document.getElementById("birdWrap");
+const pet = document.getElementById("petWrap");
 const music = document.getElementById("music");
 
 let stage = 0;
@@ -121,6 +126,7 @@ let lock = false;
 document.body.addEventListener("click",()=>{
   if(lock) return;
 
+  // 1. dokunuş → müzik + geri sayım
   if(stage === 0){
     stage = 1;
     lock = true;
@@ -130,6 +136,8 @@ document.body.addEventListener("click",()=>{
 
     countdown(3);
   }
+
+  // 2. dokunuş → yazı
   else if(stage === 2){
     stage = 3;
     lock = true;
@@ -148,13 +156,13 @@ function countdown(n){
     setTimeout(()=>{
       textEl.className="";
       textEl.innerHTML="";
-      showBird();
+      showPet();
     },1000);
   }
 }
 
-function showBird(){
-  bird.style.display="block";
+function showPet(){
+  pet.style.display="block";
   setTimeout(()=>{
     textEl.innerHTML="Zarfı açmak için<br><strong>ekrana dokun 💌</strong>";
     stage = 2;
@@ -166,7 +174,7 @@ const lines=[
   "Herkes yeni yıla",
   "Sen yıllarıma",
   "",
-  "AŞK",
+  "AŞŞKKK",
   "",
   "Kaan’dan İclale"
 ];
@@ -180,7 +188,7 @@ function typeText(){
   }
 
   if(c<lines[l].length){
-    if(lines[l]==="AŞK"){
+    if(lines[l]==="AŞŞKKK"){
       textEl.innerHTML += `<span class="love">${lines[l][c]}</span>`;
     }else{
       textEl.innerHTML += lines[l][c];
@@ -188,13 +196,21 @@ function typeText(){
     c++;
     setTimeout(typeText,120);
   }else{
-    if(lines[l]==="AŞK"){
-      textEl.innerHTML += `<span class="heart"> 🤍</span>`;
+    if(lines[l]==="AŞŞKKK"){
+      spawnHeart();
     }
     textEl.innerHTML+="<br>";
     l++; c=0;
     setTimeout(typeText,500);
   }
+}
+
+function spawnHeart(){
+  const h=document.createElement("div");
+  h.className="fly-heart";
+  h.innerHTML="🤍";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),2200);
 }
 
 function finale(){
