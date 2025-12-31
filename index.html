@@ -37,7 +37,7 @@ body{
   font-weight:bold;
 }
 
-/* KEDİ + ZARF (GARANTİLİ GÖRÜNÜR) */
+/* KEDİ + ZARF */
 #petWrap{
   position:fixed;
   top:42%;
@@ -48,11 +48,11 @@ body{
 }
 
 #petWrap img.cat{
-  width:130px;
+  width:120px;
 }
 
 #petWrap img.letter{
-  width:70px;
+  width:60px;
   margin-left:-10px;
 }
 
@@ -61,18 +61,33 @@ body{
   to{ left:110%; }
 }
 
-/* AŞŞKKK */
+/* AŞŞKKK – BOZULMAYAN FONT */
 .love{
   font-size:44px;
   font-weight:bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  position:relative;
 }
 
-/* Uçan beyaz kalp */
+/* Parıltı */
+.love::after{
+  content:"✨";
+  position:absolute;
+  right:-24px;
+  top:-8px;
+  animation:shine 1.5s infinite;
+}
+
+@keyframes shine{
+  0%,100%{opacity:0;}
+  50%{opacity:1;}
+}
+
+/* Uçan beyaz kalpler */
 .fly-heart{
   position:fixed;
-  bottom:35%;
   left:50%;
-  font-size:28px;
+  font-size:26px;
   animation:flyHeart 2.2s ease-out forwards;
   z-index:15;
 }
@@ -101,9 +116,9 @@ body{
 
 <body>
 
-<!-- 🐱 KEDİ + 💌 ZARF (PNG, NET) -->
+<!-- 🐈 KEDİ + 💌 ZARF (KESİN) -->
 <div id="petWrap">
-  <img class="cat" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/320px-Cat03.jpg" alt="Kedi">
+  <img class="cat" src="https://cdn-icons-png.flaticon.com/512/763/763704.png" alt="Kedi">
   <img class="letter" src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Zarf">
 </div>
 
@@ -131,7 +146,6 @@ let lock = false;
 document.body.addEventListener("click",()=>{
   if(lock) return;
 
-  // 1. dokunuş → müzik + geri sayım
   if(stage === 0){
     stage = 1;
     lock = true;
@@ -141,8 +155,6 @@ document.body.addEventListener("click",()=>{
 
     countdown(3);
   }
-
-  // 2. dokunuş → yazı
   else if(stage === 2){
     stage = 3;
     lock = true;
@@ -203,6 +215,7 @@ function typeText(){
   }else{
     if(lines[l]==="AŞŞKKK"){
       spawnHeart();
+      spawnHeart();
     }
     textEl.innerHTML+="<br>";
     l++; c=0;
@@ -213,6 +226,7 @@ function typeText(){
 function spawnHeart(){
   const h=document.createElement("div");
   h.className="fly-heart";
+  h.style.bottom=(35+Math.random()*10)+"%";
   h.innerHTML="🤍";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),2200);
@@ -234,6 +248,7 @@ function finale(){
 
 </body>
 </html>
+
 
 
 
