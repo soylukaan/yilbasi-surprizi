@@ -5,48 +5,50 @@
 <title>2026 🤍</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;500&display=swap');
+
 body {
   margin: 0;
   height: 100vh;
-  background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
-  overflow: hidden;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: white;
-  user-select: none;
+  overflow: hidden;
 }
 
-/* Yazı */
-#text {
-  z-index: 3;
+#container {
   text-align: center;
-  font-size: 28px;
-  line-height: 1.5;
-  transition: all 0.8s ease;
+  z-index: 2;
 }
 
-.big {
+#text {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 1.5;
+  min-height: 200px;
+  letter-spacing: 1px;
+}
+
+.sub {
+  font-size: 18px;
+  opacity: 0.85;
+  margin-top: 20px;
+}
+
+/* Geri sayım */
+#countdown {
   font-size: 90px;
   font-weight: bold;
 }
 
-/* Fade */
-.fade {
-  animation: fadeIn 1s ease forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Parçacık arka plan */
-.particle {
+/* Arka plan ışıkları */
+.light {
   position: absolute;
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   background: rgba(255,255,255,0.6);
   border-radius: 50%;
   animation: float linear infinite;
@@ -54,7 +56,7 @@ body {
 
 @keyframes float {
   from { transform: translateY(100vh); }
-  to   { transform: translateY(-10vh); }
+  to { transform: translateY(-10vh); }
 }
 
 /* Havai fişek */
@@ -69,32 +71,34 @@ body {
 
 @keyframes explode {
   from { transform: scale(1); opacity: 1; }
-  to { transform: scale(25); opacity: 0; }
+  to { transform: scale(20); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div id="text">Ekrana dokun…</div>
+<div id="container">
+  <div id="text">Ekrana dokun…</div>
+</div>
 
 <audio id="music" loop>
   <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_3e4a1c7c2c.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const text = document.getElementById("text");
+const textEl = document.getElementById("text");
 const music = document.getElementById("music");
 let started = false;
 
-/* Arka plan parçacıkları */
-for (let i = 0; i < 70; i++) {
-  let p = document.createElement("div");
-  p.className = "particle";
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.animationDuration = (6 + Math.random() * 10) + "s";
-  p.style.opacity = Math.random();
-  document.body.appendChild(p);
+/* Arka plan ışıkları */
+for (let i = 0; i < 60; i++) {
+  const l = document.createElement("div");
+  l.className = "light";
+  l.style.left = Math.random() * 100 + "vw";
+  l.style.animationDuration = (6 + Math.random() * 10) + "s";
+  l.style.opacity = Math.random();
+  document.body.appendChild(l);
 }
 
 document.body.addEventListener("click", () => {
@@ -104,38 +108,56 @@ document.body.addEventListener("click", () => {
   music.volume = 0.3;
   music.play();
 
-  countdown(3);
+  startCountdown(3);
 });
 
-function countdown(n) {
-  text.className = "big fade";
-  text.innerHTML = n;
-
-  if (n > 1) {
-    setTimeout(() => countdown(n - 1), 1000);
+function startCountdown(n) {
+  if (n > 0) {
+    textEl.innerHTML = `<div id="countdown">${n}</div>`;
+    setTimeout(() => startCountdown(n - 1), 1000);
   } else {
-    setTimeout(showFinal, 1000);
+    typeText();
   }
 }
 
-function showFinal() {
-  text.className = "fade";
-  text.innerHTML = `
-    <strong>Herkes yeni yıla,</strong><br>
-    <strong>sen yıllarıma AŞKKK 🤍</strong><br><br>
-    <small>Kaan’dan İclale</small>
-  `;
+const finalText = [
+  "Herkes yeni yıla,",
+  "sen yıllarıma",
+  "AŞKKK 🤍",
+  "",
+  "Kaan’dan İclale"
+];
 
-  fireworks();
+let line = 0;
+let char = 0;
 
-  if (navigator.vibrate) {
-    navigator.vibrate([200, 100, 200]);
+function typeText() {
+  textEl.innerHTML = "";
+  typeLine();
+}
+
+function typeLine() {
+  if (line >= finalText.length) {
+    fireworks();
+    if (navigator.vibrate) navigator.vibrate([200,100,200]);
+    return;
+  }
+
+  if (char < finalText[line].length) {
+    textEl.innerHTML += finalText[line].charAt(char);
+    char++;
+    setTimeout(typeLine, 60);
+  } else {
+    textEl.innerHTML += "<br>";
+    line++;
+    char = 0;
+    setTimeout(typeLine, 500);
   }
 }
 
 function fireworks() {
-  for (let i = 0; i < 10; i++) {
-    let s = document.createElement("div");
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement("div");
     s.className = "spark";
     s.style.left = (20 + Math.random() * 60) + "vw";
     s.style.top = (20 + Math.random() * 40) + "vh";
