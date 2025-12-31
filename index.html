@@ -2,55 +2,32 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>2026 🤍</title>
+<title>2026 🎀</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap');
 
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd6e8);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Poppins', sans-serif;
-  color: white;
   overflow: hidden;
+  user-select: none;
 }
 
-#container {
-  text-align: center;
-  z-index: 2;
-}
-
-#text {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  line-height: 1.5;
-  min-height: 200px;
-  letter-spacing: 1px;
-}
-
-.sub {
-  font-size: 18px;
-  opacity: 0.85;
-  margin-top: 20px;
-}
-
-/* Geri sayım */
-#countdown {
-  font-size: 90px;
-  font-weight: bold;
-}
-
-/* Arka plan ışıkları */
-.light {
+/* Parıltılar */
+.sparkle {
   position: absolute;
   width: 6px;
   height: 6px;
-  background: rgba(255,255,255,0.6);
+  background: white;
   border-radius: 50%;
+  opacity: 0.6;
   animation: float linear infinite;
 }
 
@@ -59,27 +36,71 @@ body {
   to { transform: translateY(-10vh); }
 }
 
+/* Merkez */
+#container {
+  text-align: center;
+  z-index: 5;
+  color: #5a1a2c;
+}
+
+#text {
+  font-family: 'Pacifico', cursive;
+  font-size: 34px;
+  line-height: 1.6;
+  min-height: 220px;
+}
+
+/* Geri sayım */
+.big {
+  font-size: 90px;
+  font-weight: bold;
+}
+
+/* Kuş */
+#bird {
+  font-size: 60px;
+  position: absolute;
+  top: 40%;
+  left: -20%;
+  animation: fly 4s linear forwards;
+  display: none;
+}
+
+@keyframes fly {
+  to { left: 110%; }
+}
+
+/* Zarf */
+#envelope {
+  font-size: 60px;
+  display: none;
+  margin-top: 20px;
+}
+
 /* Havai fişek */
 .spark {
   position: fixed;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: white;
   border-radius: 50%;
-  animation: explode 1s ease-out forwards;
+  animation: explode 1.2s ease-out forwards;
 }
 
 @keyframes explode {
   from { transform: scale(1); opacity: 1; }
-  to { transform: scale(20); opacity: 0; }
+  to { transform: scale(18); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
+<div id="bird">🕊️</div>
+
 <div id="container">
-  <div id="text">Ekrana dokun…</div>
+  <div id="text">Ekrana dokun 🎀</div>
+  <div id="envelope">💌</div>
 </div>
 
 <audio id="music" loop>
@@ -88,42 +109,62 @@ body {
 
 <script>
 const textEl = document.getElementById("text");
+const bird = document.getElementById("bird");
+const envelope = document.getElementById("envelope");
 const music = document.getElementById("music");
-let started = false;
+let step = 0;
 
-/* Arka plan ışıkları */
-for (let i = 0; i < 60; i++) {
-  const l = document.createElement("div");
-  l.className = "light";
-  l.style.left = Math.random() * 100 + "vw";
-  l.style.animationDuration = (6 + Math.random() * 10) + "s";
-  l.style.opacity = Math.random();
-  document.body.appendChild(l);
+/* Parıltılar */
+for (let i = 0; i < 70; i++) {
+  const s = document.createElement("div");
+  s.className = "sparkle";
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.animationDuration = (8 + Math.random() * 10) + "s";
+  s.style.opacity = Math.random();
+  document.body.appendChild(s);
 }
 
 document.body.addEventListener("click", () => {
-  if (started) return;
-  started = true;
+  step++;
 
-  music.volume = 0.3;
-  music.play();
+  if (step === 1) {
+    music.volume = 0.25;
+    music.play();
+    countdown(3);
+  }
 
-  startCountdown(3);
+  else if (step === 2) {
+    bird.style.display = "block";
+    setTimeout(() => {
+      envelope.style.display = "block";
+      textEl.innerHTML = "Zarfı okumak için<br>ekrana dokun…";
+    }, 3500);
+  }
+
+  else if (step === 3) {
+    envelope.style.display = "none";
+    typeText();
+  }
 });
 
-function startCountdown(n) {
-  if (n > 0) {
-    textEl.innerHTML = `<div id="countdown">${n}</div>`;
-    setTimeout(() => startCountdown(n - 1), 1000);
+/* Geri sayım */
+function countdown(n) {
+  textEl.className = "big";
+  textEl.innerHTML = n;
+
+  if (n > 1) {
+    setTimeout(() => countdown(n - 1), 1000);
   } else {
-    typeText();
+    textEl.className = "";
+    textEl.innerHTML = "";
   }
 }
 
+/* Yavaş yazı */
 const finalText = [
   "Herkes yeni yıla,",
   "sen yıllarıma",
-  "AŞKKK 🤍",
+  "AŞK 🤍",
   "",
   "Kaan’dan İclale"
 ];
@@ -146,21 +187,22 @@ function typeLine() {
   if (char < finalText[line].length) {
     textEl.innerHTML += finalText[line].charAt(char);
     char++;
-    setTimeout(typeLine, 60);
+    setTimeout(typeLine, 130);
   } else {
     textEl.innerHTML += "<br>";
     line++;
     char = 0;
-    setTimeout(typeLine, 500);
+    setTimeout(typeLine, 700);
   }
 }
 
+/* Havai fişek */
 function fireworks() {
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 6; i++) {
     const s = document.createElement("div");
     s.className = "spark";
-    s.style.left = (20 + Math.random() * 60) + "vw";
-    s.style.top = (20 + Math.random() * 40) + "vh";
+    s.style.left = (30 + Math.random() * 40) + "vw";
+    s.style.top = (30 + Math.random() * 40) + "vh";
     document.body.appendChild(s);
   }
 }
@@ -168,3 +210,9 @@ function fireworks() {
 
 </body>
 </html>
+
+ 
+
+
+
+
